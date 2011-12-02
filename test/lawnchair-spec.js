@@ -11,7 +11,7 @@ test('ctor requires callbacks in each form', function() {
 
     // raise exception if no ctor callback is supplied
     try {
-        var lc2 = new Lawnchair();    
+        var lc2 = new Lawnchair();
     } catch(e) {
         ok(true, 'exception raised if no callback supplied to init');
     }
@@ -65,7 +65,7 @@ test('full callback syntax', function() {
         same(this, store, '"this" should be scoped to the lawnchair object inside callback');
         QUnit.start();
     });
-}) 
+})
 
 test('adding, nuking and size tests', function() {
     QUnit.stop();
@@ -77,7 +77,7 @@ test('adding, nuking and size tests', function() {
             store.nuke(function() {
                 store.all(function(r) {
                     equals(r.length, 0, 'parameter should have length 0 after nuking');
-                    QUnit.start();                    
+                    QUnit.start();
                 });
             });
         });
@@ -118,8 +118,8 @@ test('scoped variable in shorthand callback', function() {
 module('nuke()', {
     setup:function() {
 		QUnit.stop();
-        store.nuke(function() { 
-			QUnit.start() 
+        store.nuke(function() {
+			QUnit.start()
 		});
     },
     teardown:function() {
@@ -189,7 +189,7 @@ test( 'shorthand callback syntax', function() {
     store.save(me, 'ok(true, "shorthand syntax callback gets evaled"); same(this, store, "`this` should be scoped to the Lawnchair instance"); QUnit.start();');
 })
 
-test( 'saving objects', function() { 
+test( 'saving objects', function() {
     QUnit.stop();
     QUnit.expect(1);
 
@@ -294,7 +294,7 @@ test('get functionality', function() {
             store.get('doesntexist', function(s) {
                 ok(true, 'should call callback even for non-existent key');
                 equals(s, null, 'should return null for non-existent key');
-                QUnit.start();                
+                QUnit.start();
             });
         });
     });
@@ -312,7 +312,7 @@ test('get batch functionality', function() {
             equals(r.length, t.length, "should batch get")
             QUnit.start()
         })
-    }) 
+    })
 });
 
 test( 'full callback syntax', function() {
@@ -352,10 +352,10 @@ test( 'chainable', function() {
     QUnit.stop();
 
     store.save({key:'me', name:'brian'}, function() {
-        same(store.remove('me', function() { 
-                QUnit.start(); 
+        same(store.remove('me', function() {
+                QUnit.start();
              }), store, 'should be chainable');
-         
+
     });
 });
 
@@ -381,7 +381,7 @@ test('short callback syntax', function() {
     });
 });
 
-// FIXME need to add tests for batch deletion 
+// FIXME need to add tests for batch deletion
 test( 'remove functionality', function() {
     QUnit.stop();
     QUnit.expect(2);
@@ -403,4 +403,17 @@ test( 'remove functionality', function() {
             });
         //});
     });
-}); 
+});
+
+module('DOM Adapter');
+
+test('overwrites a record', function() {
+		new Lawnchair({name: "test"}, function(store) {
+				same(store.adapter, "dom");
+				store.save({key: "foo", value: "bar1"});
+				store.save({key: "foo", value: "bar1"});
+				store.keys(function(keys) {
+						same(keys.length, 1);
+				});
+		});
+});
